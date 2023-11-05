@@ -1,33 +1,31 @@
 package com.example.grapthql.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Book {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private String isn;
+        private int id;
+        private String isbn;
         private String title;
         private String publisher;
 
     public Book() {
     }
 
-    public Book(String isn, String title, String publisher) {
-        this.isn = isn;
+    public Book(String isbn, String title, String publisher) {
+        this.isbn = isbn;
         this.title = title;
         this.publisher = publisher;
     }
 
-    public String getIsn() {
-        return isn;
+    public String getIsbn() {
+        return isbn;
     }
 
-    public void setIsn(String isn) {
-        this.isn = isn;
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
     }
 
     public String getTitle() {

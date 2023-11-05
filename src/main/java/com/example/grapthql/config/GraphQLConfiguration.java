@@ -2,6 +2,7 @@ package com.example.grapthql.config;
 
 import com.example.grapthql.model.Book;
 import com.example.grapthql.repository.BookRepository;
+import graphql.GraphQL;
 import graphql.schema.DataFetcher;
 import graphql.schema.GraphQLSchema;
 import graphql.schema.idl.RuntimeWiring;
@@ -23,6 +24,7 @@ import static graphql.schema.idl.TypeRuntimeWiring.newTypeWiring;
 
 @Configuration
 public class GraphQLConfiguration {
+
 
     @Autowired
     private BookRepository bookRepository;
@@ -63,5 +65,6 @@ public class GraphQLConfiguration {
             return book.getPublisher();
         };
     }
+
 }
 
