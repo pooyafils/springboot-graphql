@@ -4,6 +4,7 @@ import com.example.grapthql.model.Book;
 import com.example.grapthql.repository.BookRepository;
 import graphql.GraphQL;
 import graphql.schema.DataFetcher;
+import graphql.schema.DataFetchingEnvironment;
 import graphql.schema.GraphQLSchema;
 import graphql.schema.idl.RuntimeWiring;
 import graphql.schema.idl.SchemaGenerator;
@@ -34,15 +35,24 @@ public class GraphQLConfiguration {
         SchemaParser schemaParser = new SchemaParser();
         TypeDefinitionRegistry typeDefinitionRegistry = schemaParser.parse(new ClassPathResource("books.graphql").getInputStream());
         RuntimeWiring runtimeWiring = newRuntimeWiring()
-                .type(newTypeWiring("Query")
-                        .dataFetcher("allBooks", allBooksFetcher()))
+                .type(newTypeWiring("Query").dataFetcher("allBooks", allBooksFetcher()).dataFetcher("findOne", bookByIdFetcher()))
                 .type(newTypeWiring("Mutation")
                         .dataFetcher("createBook", createBookFetcher()))
                 .type(newTypeWiring("Book")
                         .dataFetcher("publisher", publisherFetcher()))
+
                 .build();
         return new SchemaGenerator().makeExecutableSchema(typeDefinitionRegistry, runtimeWiring);
     }
+
+    private DataFetcher<Book> bookByIdFetcher() {
+        return dataFetchingEnvironment -> {
+            String bookId = dataFetchingEnvironment.getArgument("id");
+            return bookRepository.findById(Integer.parseInt(bookId)); // Fetch the book by its ID
+        };
+    }
+
+
 
     private DataFetcher<List<Book>> allBooksFetcher() {
         return dataFetchingEnvironment -> (List<Book>) bookRepository.findAll();

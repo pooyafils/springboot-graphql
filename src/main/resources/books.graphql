@@ -12,6 +12,7 @@ input BookInput {
 
 type Query {
     allBooks: [Book]
+    findOne(id: ID!): Book
 }
 
 type Mutation {
