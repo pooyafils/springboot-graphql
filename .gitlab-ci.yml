@@ -1,0 +1,25 @@
+stages:
+  - build
+
+variables:
+  MAVEN_CLI_OPTS: "--batch-mode --errors --fail-at-end --show-version"
+
+before_script:
+  - export MAVEN_OPTS=-Dmaven.repo.local=.m2/repository
+
+build:
+  stage: build
+  script:
+    - apt-get update -qy  # Update the package index
+    - apt-get install -y maven  # Install Maven
+    - mvn $MAVEN_CLI_OPTS clean install
+  artifacts:
+    paths:
+      - target/*.jar
+
+test:
+  stage: build
+  script:
+    - apt-get update -qy  # Update the package index
+    - apt-get install -y maven  # Install Maven
+    - mvn $MAVEN_CLI_OPTS test
